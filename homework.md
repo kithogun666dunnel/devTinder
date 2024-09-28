@@ -1,0 +1,13 @@
+-create a repo ✅
+-initialize the repo ✅
+-node_modules package.json package-lock.json ✅
+-install express ✅
+-create a server ✅
+-listen on port 7777 ✅
+-write request handlers ✅
+-install nodemon ✅
+-update scripts in package.json ✅
+-what are dependencies? ✅
+- what is use of -g while installing packages? ✅
+- difference between carrot and tilde in package.json ✅
+
