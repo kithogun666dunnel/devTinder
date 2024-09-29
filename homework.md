@@ -9,5 +9,5 @@
 -update scripts in package.json ✅
 -what are dependencies? ✅
 - what is use of -g while installing packages? ✅
-- difference between carrot and tilde in package.json ✅
+- difference between   [  ^ & ~ ]     carrot and tilde in package.json ✅
 
