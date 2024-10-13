@@ -1,36 +1,27 @@
 const express = require("express");
+const app = express();
 
-const app = express(); // calling express function
+const { adminAuth, userAuth } = require("./middlewares/auth");
 
-app.use("/user", (req, res) => {
-    res.send("HAHAHAHHAHAHAHHAHAAH");
-});
-// 
+app.use("/admin", adminAuth);
 
 
-
-// this will match only GET requests to the /test route
-app.get("/user", (req, res) => {
-    res.send({ firstName: "John", lastName: "Doe" });
+app.get("/user", userAuth, (req, res) => {
+  res.send("USER DATA SENT");
 });
 
 
-app.post("/user", (req, res) => {
-  // Save data to the database 
-    res.send("data successfully saved to the database");
-});
-app.delete("/user", (req, res) => {
-    res.send("deleted data successfully from the database");
+
+app.get("/admin/getAllData", (req, res) => {
+  res.send("ALL DATA SENT");
 });
 
-// this will match all the HTTP methods API calls to the /test route
-app.use("/test", (req, res) => {
-    res.send("test from the backend");
+app.get("/admin/deleteUser", 
+  (req, res) => {
+  res.send("deleted User data");
 });
-
-
 
 
 app.listen(7777, () => {
-    console.log("server is successfully listening on port 7777");
+  console.log("server is succesfully listening on port 7777");
 });
