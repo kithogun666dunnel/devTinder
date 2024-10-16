@@ -11,9 +11,9 @@ const adminAuth = (req, res, next) => {
     } else {
         next(); // Proceed to the next middleware or route handler
     }
-};
+};``
 
-// Define the userAuth middleware
+// Define the use rAuth middleware
 const userAuth = (req, res, next) => {
     console.log("user auth is getting checked");
     const token = "XYZU";
