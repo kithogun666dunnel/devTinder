@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const validator = require("validator");
+
 
 const userSchema = new mongoose.Schema({
     firstName: {
@@ -16,10 +18,20 @@ const userSchema = new mongoose.Schema({
         unique: true,
         lowercase: true,
         trim:true,
+        validate(value) {
+            if (!validator.isEmail(value)) {
+                throw new Error("Email not valid" + value);
+            }
+        },
     },
     password: {
         type: String,
         required: true,
+        validate(value) {
+            if (!validator.isStrongPassword(value)) {
+                throw new Error("Password not valid " + value);
+            }
+        }
     },
     age: {
         type: Number,
@@ -34,7 +46,12 @@ const userSchema = new mongoose.Schema({
     },
     photoUrl: {
         type: String,
-        default: "https://www.pngwing.com/en/free-png-zkwwb"
+        default: "https://www.pngwing.com/en/free-png-zkwwb",
+        validate(value) {
+            if (!validator.isURL(value)) {
+                throw new Error("photo Url not valid " + value);
+            }
+        },
     },
     bio: {
         type: String,

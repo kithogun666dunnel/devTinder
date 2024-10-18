@@ -11,11 +11,12 @@
     "nodejs",
     "javascript"
   ],
-  "author": "Pankaj Kumar",
+  "author": "Pankaj Saharan",
   "license": "ISC",
   "dependencies": {
     "express": "^4.21.1",
     "mongodb": "^6.9.0",
-    "mongoose": "^8.7.1"
+    "mongoose": "^8.7.1",
+    "validator": "^13.12.0"
   }
 }
