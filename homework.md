@@ -49,7 +49,16 @@ API GET USER BY EMAIL
 API FEED API ---= GET/ feed  get all the users from the database 
 API -- GET user by ID
 create a delete user API
+
 CREATE A API TO UP[DATE DATA OF A USER]
 explore the mongoose documenntation for model mrethods 
 what are options i model.fin don wand update method expore more anout it 
 API update the uiser wiotjh email id 
+
+
+explore schematype options from thwe docs 
+add reqyired uniquy lower min minlength trum 
+add default 
+create a custom validati function for gwender 
+improve dv schme a- put all aprroproate validation on each field in schema 
+add timestamps to the userschema 
