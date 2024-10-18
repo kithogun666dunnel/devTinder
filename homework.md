@@ -44,3 +44,12 @@ error handling using try catch
 js object and JSON (DIFFERENCE BITCH)
 add the express.json middleware to your app 
 make your signup apo dynamic to recive data from end users
+user.findone  with duplicate email ids, which object will be returned 
+API GET USER BY EMAIL 
+API FEED API ---= GET/ feed  get all the users from the database 
+API -- GET user by ID
+create a delete user API
+CREATE A API TO UP[DATE DATA OF A USER]
+explore the mongoose documenntation for model mrethods 
+what are options i model.fin don wand update method expore more anout it 
+API update the uiser wiotjh email id 
