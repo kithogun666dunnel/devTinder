@@ -62,3 +62,6 @@ add default
 create a custom validati function for gwender 
 improve dv schme a- put all aprroproate validation on each field in schema 
 add timestamps to the userschema 
+add API LEVEL VALIDATIONS on patch request and signUp post API
+DATA SANITIZATION ----=> Add API validation for each field --{our backend must be secure }
+
