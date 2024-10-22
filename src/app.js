@@ -4,11 +4,12 @@
   const app = express();
   const { validateSignUpdata } = require("./utils/validation");
   const bcrypt = require('bcryptjs');
-  const cors = require("cors");
-  
-app.use(cors)
-app.use(express.json());
+  const cookieParser = require('cookie-parser');
+  const jwt = require('jsonwebtoken');
 
+
+app.use(express.json());
+app.use(cookieParser()); 
 // post api does helps to push the users in the database or add new users 
 app.post("/signup", async (req, res) => {
     
@@ -45,9 +46,18 @@ app.post("/login", async (req, res) => {
     const isPasswordValid = await bcrypt.compare(password, user.password);
     
     if(isPasswordValid) {
+
+      // create a JWT token
+      const token = await jwt.sign({
+        _id: user._id}, "secretKey");
+      // ADD THE TOKEN TO COOKIE AND SEND THE RESPONSE BACK TO USER
+
+
+
+      res.cookie("token", token);
       res.send("Logged in successfully");
     } else {
-      throw new Error("incalid credentials");
+      throw new Error("invalid credentials");
     }
   }
     catch(err) {
@@ -55,6 +65,36 @@ app.post("/login", async (req, res) => {
     }
   }
   );
+
+app.get("/profile", async (req, res) => {
+  try{const cookies = req.cookies;
+
+  const { token } = cookies;
+
+  if (!token) {
+    throw new Error("invalid token");
+  }
+  // validate my token.
+
+  const decodedMessage = await jwt.verify(token, "secretKey");
+
+  const { _id } = decodedMessage;
+
+
+  const user = await User.findById(_id);
+
+  if (!user) {
+    throw new Error("user not found");
+  }
+  res.send(user);
+
+  }
+ catch (err) {
+    res.status(400).send("ERROR : " + err.message);
+  }
+
+
+});
 
 // GET USER BY EMAIL 
 app.get("/user", async (req, res) => {
