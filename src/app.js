@@ -4,8 +4,9 @@
   const app = express();
   const { validateSignUpdata } = require("./utils/validation");
   const bcrypt = require('bcryptjs');
+  const cors = require("cors");
   
-
+app.use(cors)
 app.use(express.json());
 
 // post api does helps to push the users in the database or add new users 
