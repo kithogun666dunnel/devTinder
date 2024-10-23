@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const validator = require("validator");
-
+const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
     firstName: {
@@ -63,6 +63,28 @@ const userSchema = new mongoose.Schema({
 },
 {
     timestamps: true,
-});
+}
+);
+
+userSchema.methods.getJWT = async function () {     // dont use Arrow function here as this keyword will not be compatible with it 
+    const user = this;   // for instance of particular user....
+    const token = await jwt.sign({ _id: user._id }, "secretKey", {
+        expiresIn: "7d", // Token expiry in 7 days
+    });
+  return token;
+};
+
+userSchema.methods.validatePassword = async function (passwordInputByUser) {
+    const user = this;
+    const passwordHash = user.password;
+
+    const isPasswordValid = await bcrypt.compare(passwordInputByUser, passwordHash);
+    return isPasswordValid;
+}
+
+
 
 module.exports= mongoose.model("User", userSchema);   
+
+
+// attaching helper methods in this schema that would closely relate to user

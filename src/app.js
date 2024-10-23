@@ -12,6 +12,7 @@
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser()); 
+
 // post api does helps to push the users in the database or add new users 
 app.post("/signup", async (req, res) => {
     
@@ -37,71 +38,60 @@ app.post("/signup", async (req, res) => {
       res.status(400).send("ERROR : " + err.message);
     }                                                                                                   
     });
-
-app.post("/login", async (req, res) => {
-  try{
-    const {emailId, password} = req.body;
-    const user = await User.findOne({ emailId: emailId });
-    if(!user) {
-      throw new Error("invalid credential");
-    }           
-    const isPasswordValid = await bcrypt.compare(password, user.password);
     
-    if(isPasswordValid) {
+app.post("/login", async (req, res) => {
+  try {
+    const { emailId, password } = req.body;
+    const user = await User.findOne({ emailId: emailId });
+    if (!user) {
+      throw new Error("Invalid credentials");
+    }
+    const isPasswordValid = await user.validatePassword(password);
 
-      // create a JWT token
-      const token = await jwt.sign({
-        _id: user._id}, "secretKey");
-      // ADD THE TOKEN TO COOKIE AND SEND THE RESPONSE BACK TO USER
+    if (isPasswordValid) {
+      // Create a JWT token
+      const token = await user.getJWT();
 
+      // Add the token to the cookie and send the response back to the user
+      res.cookie("token", token, {
+        expires: new Date(Date.now() + 8 * 3600000), // Cookie expires in 8 hours
+      });
 
-
-      res.cookie("token", token);
       res.send("Logged in successfully");
     } else {
-      throw new Error("invalid credentials");
+      throw new Error("Invalid credentials");
     }
+  } catch (err) {
+    res.status(400).send("ERROR: " + err.message);
   }
-    catch(err) {
-      res.status(400).send("ERROR : " + err.message);
-    }
-  }
-  );
-
-app.get("/profile", userAuth, async (req, res) => {
-  try{
-    const user = req.user;
-    res.send(user);
-    }
-   catch (err) {
-      res.status(400).send("ERROR : " + err.message);
-    }
-  });
-
-
-app.post("/sendConnectionRequest", userAuth, async(req, res) => {
-  const user = req.user;
-  
-
-
-console.log("connection request sent");
-console.log(user.firstName + " " + "sent the request to connect with you");
-res.send(user.firstName + " " + "sent the request to connect with you"); 
 });
 
+    // Profile route
+    app.get("/profile", userAuth, async (req, res) => {
+      try {
+        const user = req.user; // Assuming `userAuth` middleware adds the user to req
+        res.send(user);
+      } catch (err) {
+        res.status(400).send("ERROR: " + err.message);
+      }
+    });
 
 
 
 
+app.post("/sendConnectionRequest", userAuth, async (req, res) => {
+  try {
+    const user = req.user;
 
-
-
-
-
-
-
-
-
+    // Logic for sending connection request goes here (e.g., add to database, etc.)
+    
+    console.log("Connection request sent");
+    console.log(user.firstName + " sent the request to connect with you");
+    res.send(user.firstName + " sent the request to connect with you");
+  } catch (err) {
+    res.status(400).send("ERROR: " + err.message);
+  }
+});
 
 
 
@@ -116,3 +106,7 @@ res.send(user.firstName + " " + "sent the request to connect with you");
     .catch((err) => {
       console.log("database cannot be connected...", err);
     });
+
+
+
+
